@@ -1,0 +1,19 @@
+{
+  "name": "menu-tareas",
+  "version": "1.0.0",
+  "description": "Menú de tareas a realizar",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "menu",
+    "listados"
+  ],
+  "author": "Alexander Aparicio Meza Roque",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "inquirer": "^8.2.0"
+  }
+} 
