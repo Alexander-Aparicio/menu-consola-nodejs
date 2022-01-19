@@ -1,5 +1,5 @@
 require('colors')
-const {Menu, Pause} = require('./helpers/inquirer')
+const {Menu, ingresoDatos, lista, dato} = require('./helpers/inquirer')
 const Tarea = require('./modules/Tarea')
 const Tareas = require('./modules/Tareas')
 
@@ -9,20 +9,70 @@ const main = async ()=>{
 
     console.log('Hola Mundo')
 
-    let opt = ''
-    let next = ''
+    let opcion = ''
+    opcion = await lista()
+    const tareas = new Tareas()
 
-    do{
-        // opt = await Menu()
-        // console.log({opt})
-        const tarea = new Tarea('comer')
-        const tareas = new Tareas()
-        tareas._listado[tarea.id]=tarea
-        console.log(tareas)
-        next = await Pause()
-        // console.log({next})
+    do {
 
-    } while( opt !== '0')
+        switch (opcion.opcion) {
+            case '0':
+                console.clear()
+                break;
+
+            case '1':
+                console.log(opcion)
+                let input = await dato()
+                tareas.crearTarea(input.message)
+                
+
+                if(input.message = 'regresar'){
+
+                    console.clear()
+                    opcion = await lista()
+    
+                }
+                break;
+
+            case '2':
+                
+                console.log(tareas._listado)
+                opcion={opcion:'1'}
+                break;
+        }
+        
+    } while (opcion.opcion !== '0');
+
+    return opcion
+    // const input = await ingresoDatos()
+    // console.log(input)
+
+    // let opt = ''
+    // const tareas = new Tareas()
+
+    // do{
+
+    //     opt = await Menu()
+
+    //     switch (opt) {
+
+    //         case '1':
+    //             // Crear opción
+    //             console.log(opt)
+    //             const input = await ingresoDatos()
+    //             console.log(input)
+    //             // next = await Pause()
+    //             break;
+        
+    //         case '2':
+    //             console.log( tareas._listado )
+    //             // next = await Pause()
+    //             break;
+
+    //     }
+
+    // } while( opt !== '0')
+
 
 }
 
