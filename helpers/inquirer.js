@@ -1,5 +1,6 @@
 require('colors')
 const inquirer = require('inquirer')
+const Tarea = require('../modules/Tarea')
 
 const lista = async ()=>{
 
@@ -89,10 +90,90 @@ const continuar = async()=>{
   return opcion
 }
 
+const listadoABorrar = async (tareas = [])=>{
+
+ const choices = tareas.map( (tarea, i) => {
+
+  const idx = `${i+1}`
+
+  return {
+
+    value: tarea.id,
+    name:  `${idx} ${tarea.desc}`.green
+
+  }
+
+ })
+ 
+ const questions = [
+   {
+     type:'list',
+     name:'id',
+     message:'Borrar',
+     choices,
+   }
+ ]
+
+ const {id} = await inquirer.prompt(questions)
+
+ return id
+
+}
+
+const confirmar = async(message)=>{
+
+  const questions = [
+    {
+      type:'confirm',
+      name:'ok',
+      message
+    }
+  ]
+
+  const {ok} = await inquirer.prompt(questions)
+
+  return ok
+
+}
+
+const completarTareas = async (tareas = [])=>{
+
+  const choices = tareas.map( (tarea, i) => {
+ 
+   const idx = `${i+1}`
+ 
+   return {
+ 
+     value: tarea.id,
+     name:  `${idx} ${tarea.desc}`.green,
+      checked: (tarea.completadoEn) ? true : false
+   }
+ 
+  })
+  
+  const question = [
+    {
+      type:'checkbox',
+      name:'ids',
+      message:'Selecciones',
+      choices,
+    }
+  ]
+ 
+  const {ids} = await inquirer.prompt(question)
+ 
+  return ids
+ 
+}
+
+
 module.exports ={
-  lista  ,
-  dato ,
-  continuar
+  lista,
+  dato,
+  continuar,
+  listadoABorrar,
+  confirmar,
+  completarTareas
 }
 
 

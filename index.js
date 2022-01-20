@@ -1,5 +1,6 @@
 require('colors')
-const {lista, dato, continuar} = require('./helpers/inquirer')
+const { guardarDB, readArchivo } = require('./helpers/guardarArchivo')
+const {lista, dato, continuar, listadoABorrar, confirmar, completarTareas} = require('./helpers/inquirer')
 const Tarea = require('./modules/Tarea')
 const Tareas = require('./modules/Tareas')
 
@@ -12,7 +13,8 @@ const main = async ()=>{
     let opcion = ''
     
     const tareas = new Tareas()
-
+    const archivo = await readArchivo()
+    tareas.cargarTareasFromArray(archivo)
     do {
 
         console.clear()
@@ -28,16 +30,65 @@ const main = async ()=>{
                 let input = await dato()
                 tareas.crearTarea(input.tarea)
                 await continuar()
-
+                
                 break;
 
             case '2':
                 console.clear()
-                console.log(tareas._listado)
+                
+                tareas.listaCompleta()
                 
                 await continuar()
-                break;
+                
+            break;
+
+            case '3':
+                console.clear()
+                
+                tareas.listaCompletadas()
+                
+                await continuar()
+                
+            break;
+
+            case '4':
+                console.clear()
+                
+                tareas.listaPendientes()
+                
+                await continuar()
+                
+            break;
+
+            case '5':
+                console.clear()
+                
+                const ids = await completarTareas(tareas.listadoArr)
+                console.log(ids)
+                tareas.toggleCompletadas(ids)
+                await continuar()
+                
+            break;
+
+            case '6':
+                console.clear()
+                
+                const id = await listadoABorrar(tareas.listadoArr)
+                console.log({id})
+                const ok = await confirmar('¿Está seguro?')
+
+                if(ok){
+
+                    tareas.borrarTarea(id)
+                    console.log('tarea borrada')
+
+                }
+                await continuar()
+                
+            break;
         }
+
+        guardarDB(tareas.listadoArr)
         
     } while (opcion.opcion !== '0');
 
